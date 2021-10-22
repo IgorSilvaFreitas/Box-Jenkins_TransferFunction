@@ -5,49 +5,49 @@ setwd("D:/Users/Igor/Documents/TCC1/AS bases utilizadas")
 
 #Chamando a base de dados
 base <- readxl::read_excel("D:/Users/Igor/Documents/TCC1/AS bases utilizadas/Dados_melhorados.xlsx")
-
+base <- base |> dplyr::rename(`Madeira`=`Área desmatada`)
 
 ## Gráficos temporalmente dependente para as séries
 library(ggplot2)
 library(scales)
 library(dplyr)
 
-#?rea de agricultura
+#Área de agricultura
 g1 <- base |> ggplot(mapping = aes(x=Ano, y = `Agricultura(Ha)`/10000))+
   geom_point()+
   geom_line()+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de lavouras (10 mil hec.)",
+       y = "Área de lavouras (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
   scale_y_continuous(labels= scales::comma)
 
 
-#?rea de pastagem
+#Área de pastagem
 g2 <- base[-36,] |> ggplot(mapping = aes(x=Ano, y = `Pastagem(Ha)`/10000))+
   geom_point()+
   geom_line()+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de pastagem (10 mil hec.)",
+       y = "Área de pastagem (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
   scale_y_continuous(labels= scales::comma)
 
 
-#?rea de floresta nativa
+#Área de floresta nativa
 g3 <- base[-36,] |> ggplot(mapping = aes(x=Ano, y = `Floresta Natural(Ha)`/10000))+
   geom_point()+
   geom_line()+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de Floresta nativa (10 mil hec.)",
+       y = "Área de Floresta nativa (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
@@ -183,34 +183,34 @@ ga <- base_diff1[-35,] |> ggplot(mapping = aes(x=ano, y = agro1/10000))+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de lavouras (10 mil hec.)",
+       y = "Área de lavouras (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
   scale_y_continuous(labels= scales::comma)
 
-#?rea de pastagem
+#Área de pastagem
 gb <- base_diff1[-35,] |> ggplot(mapping = aes(x=ano, y = past1/10000))+
   geom_point()+
   geom_line()+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de pastagem (10 mil hec.)",
+       y = "Área de pastagem (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
   scale_y_continuous(labels= scales::comma)
 
 
-#?rea de floresta nativa
+#Área de floresta nativa
 gc <- base_diff1[-35,] |> ggplot(mapping = aes(x=ano, y = flor1/10000))+
   geom_point()+
   geom_line()+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de Floresta nativa (10 mil hec.)",
+       y = "Área de Floresta nativa (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
@@ -273,34 +273,34 @@ ga2 <- base_diff2[-34,] |> ggplot(mapping = aes(x=ano, y = agro2/10000))+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de lavouras (10 mil hec.)",
+       y = "Área de lavouras (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
   scale_y_continuous(labels= scales::comma)
 
-#?rea de pastagem
+#Área de pastagem
 gb2 <- base_diff2[-34,] |> ggplot(mapping = aes(x=ano, y = past2/10000))+
   geom_point()+
   geom_line()+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de pastagem (10 mil hec.)",
+       y = "Área de pastagem (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
   scale_y_continuous(labels= scales::comma)
 
 
-#?rea de floresta nativa
+#Área de floresta nativa
 gc2 <- base_diff2[-34,] |> ggplot(mapping = aes(x=ano, y = flor2/10000))+
   geom_point()+
   geom_line()+
   geom_smooth(method = "lm",
               se = FALSE)+
   labs(x = "Ano",
-       y = "?rea de Floresta nativa (10 mil hec.)",
+       y = "Área de Floresta nativa (10 mil hec.)",
        title = "")+
   theme_classic()+
   scale_x_continuous(breaks = seq(1985, 2020, 5))+
@@ -407,7 +407,7 @@ Arima(ts_flor, order = c(2,2,1))
 Arima(ts_flor, order = c(2,2,2))
 
 
-#?rea de pastagem, d=2
+#Área de pastagem, d=2
 Arima(ts_past, order = c(0,2,0))
 Arima(ts_past, order = c(0,2,1))
 Arima(ts_past, order = c(1,2,0))
@@ -431,7 +431,7 @@ Arima(ts_gado, order = c(2,2,1))
 Arima(ts_gado, order = c(2,2,2))
 
 
-#?rea de agricultura, d=1
+#Área de agricultura, d=1
 Arima(ts_agro, order = c(0,1,0))
 Arima(ts_agro, order = c(0,1,1))
 Arima(ts_agro, order = c(1,1,0))
