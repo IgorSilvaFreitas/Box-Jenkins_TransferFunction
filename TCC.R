@@ -492,6 +492,7 @@ Box.test(fit5$residuals, lag = 1, type = "Box-Pierce", fitdf = 0)
 shapiro.test(fit1$residual)
 shapiro.test(fit2$residual)
 shapiro.test(fit3$residual)
+shapiro.test(fit4$residual)
 shapiro.test(fit4$residual[-c(30,31)])
 shapiro.test(fit5$residual)
 
@@ -584,3 +585,58 @@ dev.off()
 pdf("efe_aju.pdf")
 grid.arrange(gea1,gea2,gea3,gea4,gea5 ,ncol=2,nrow=3)
 dev.off()
+
+
+## correlação cruzada
+
+#Transformando todas as séries em estacionárias
+
+ts_flor_est <- diff(ts_flor, differences = 2)
+ts_past_est <- diff(ts_past, differences = 2)
+ts_gado_est <- diff(ts_gado, differences = 2)
+ts_agro_est <- diff(ts_agro, differences = 1)
+ts_foco_est <- diff(ts_focos, differences = 1)
+
+ccf(ts_flor_est,ts_past_est)
+
+# cross correlation function
+arima_past <- Arima(ts_past_est, order=c(2,0,0))
+arima_gado <- Arima(ts_gado_est, order=c(1,0,1))
+arima_agro <- Arima(ts_gado_est, order=c(1,0,0))
+arima_foco <-Arima(ts_gado_est, order=c(2,0,1))
+
+
+modelo_florpast <- Arima(ts_flor_est, model=arima_past)
+ccf(modelo_florpast$residuals, arima_past$residuals, xlim=c(0,13))
+
+modelo_florgado <- Arima(ts_flor_est, model=arima_gado)
+ccf(modelo_florpast$residuals, arima_gado$residuals, xlim=c(0,13))
+
+modelo_floragro <- Arima(ts_flor_est, model=arima_agro)
+ccf(modelo_floragro$residuals, arima_agro$residuals, xlim=c(0,13))
+
+modelo_florfoco <- Arima(ts_flor_est, model=arima_foco)
+ccf(modelo_florfoco$residuals, arima_foco$residuals, xlim=c(0,13))
+
+
+
+
+library(TSA)
+fitduplo <- arimax(ts_flor, order=c(0,2,1), xtransf=ts_past, transfer=list(c(0,0)))
+
+
+res_duplo <- data.frame(Ano=base$Ano[-36], residuos=fitted(fitduplo))
+gduplo <- base[-36,] |> 
+  ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=res_duplo, aes(y=x), col="red")+
+  geom_line(data=res_duplo, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Quantidade de focos de queimadas")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+accuracy(ts_flor,fitted(fitduplo))
+
+
