@@ -640,3 +640,89 @@ gduplo <- base[-36,] |>
 accuracy(ts_flor,fitted(fitduplo))
 
 
+
+## Previsão com modelos univariados
+
+plot_flor <- forecast(fit11, h=11)
+prev_flor <- data.frame(Ano=c(2020:2030), previsao=plot_flor$mean)
+res_flor |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_flor, aes(y=previsao), col="blue")+
+  geom_line(data=prev_flor, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+plot_past <- forecast(fit222, h=11)
+prev_past <- data.frame(Ano=c(2020:2030), previsao=plot_past$mean)
+res_past |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_past, aes(y=previsao), col="blue")+
+  geom_line(data=prev_past, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Pastagem", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+
+plot_gado <- forecast(fit3, h=11)
+prev_gado <- data.frame(Ano=c(2020:2030), previsao=plot_gado$mean)
+res_gado |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_gado, aes(y=previsao), col="blue")+
+  geom_line(data=prev_gado, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Efetivo bovino", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+
+plot_agro <- forecast(fit4, h=11)
+prev_agro <- data.frame(Ano=c(2020:2030), previsao=plot_agro$mean)
+res_agro |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_agro, aes(y=previsao), col="blue")+
+  geom_line(data=prev_agro, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Agricultura", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+
+
+plot_foco <- forecast(fit5, h=11)
+prev_foco <- data.frame(Ano=c(2020:2030), previsao=plot_foco$mean)
+res_foco |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_foco, aes(y=previsao), col="blue")+
+  geom_line(data=prev_foco, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Focos de Queimada", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+
+
+plot_duplo <- forecast(fitduplo, h=11)
+prev_duplo <- data.frame(Ano=c(2020:2030), previsao=plot_duplo$mean)
+res_duplo |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_duplo, aes(y=previsao), col="blue")+
+  geom_line(data=prev_duplo, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
