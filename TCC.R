@@ -1,7 +1,7 @@
 #Códigos R do TCC 
 
 #Setando a pasta com as bases de dados
-setwd("C:/Users/bel/Documents/TCC1/AS bases utilizadas")
+setwd("D:/Users/Igor/Documents/TCC1/AS bases utilizadas")
 
 #Chamando a base de dados
 base <- readxl::read_excel("D:/Users/Igor/Documents/TCC1/AS bases utilizadas/Dados_melhorados.xlsx")
@@ -505,80 +505,82 @@ skewness(fit4$residual)
 
 
 ## Gráficos de valor efetivo vs valor ajustado
-pdf("slide_1.pdf")
-par(mfrow=c(2,2))
+
 res_flor <- data.frame(Ano=base$Ano[-36], residuos=fit11$fitted)
-base |> 
+gea1 <- base |> 
   ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
   geom_point(data=res_flor, aes(y=x), col="red")+
   geom_line(data=res_flor, aes(y=x, colour="red"))+
   scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
-  labs(y="Área de floresta nativa")+
+  labs(y="Área de floresta nativa")+ 
+  theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
 
+res_past <- data.frame(Ano=base$Ano[-36], residuos=fit222$fitted)
+gea2 <- base |> 
+  ggplot(aes(x=Ano, y=`Pastagem(Ha)`/10000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=res_past, aes(y=x), col="red")+
+  geom_line(data=res_past, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Área de Pastagem")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
 
 
-plot(ts_past,
-     ylab="?rea de pastagem",
-     xlab="Ano",
-     main = "",
-     type = "l")
-lines(ts_past-fit222$residuals,
-      col="Red",
-      type = "l")
-legend("topleft", c("Efetivo","Ajustado"),
-       col = c("black","red"), lty=c(1,1), bty="n",cex=0.6,lwd=2)
+res_gado <- data.frame(Ano=base$Ano[-36], residuos=fit3$fitted)
+gea3 <- base |> 
+  ggplot(aes(x=Ano, y=`Efetivo Bovino`/10000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=res_gado, aes(y=x), col="red")+
+  geom_line(data=res_gado, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Efetivo bovino")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
 
-
-
-plot(ts_gado,
-     ylab="Efetivo bovino",
-     xlab="Ano",
-     main = "",
-     type = "l")
-lines(ts_gado-fit3$residuals,
-      col="Red",
-      type = "l")
-legend("topleft", c("Efetivo","Ajustado"),
-       col = c("black","red"), lty=c(1,1), bty="n",cex=0.6,lwd=2)
-
+pdf("slide_1.pdf")
+grid.arrange(gea1,gea2,gea3 ,ncol=2,nrow=2)
 dev.off()
 
-pdf("slide_2.pdf")
+
+
+res_agro <- data.frame(Ano=base$Ano[-36], residuos=fit4$fitted)
+gea4 <- base |> 
+  ggplot(aes(x=Ano, y=`Agricultura(Ha)`/10000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=res_agro, aes(y=x), col="red")+
+  geom_line(data=res_agro, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Área de Agricultura")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
 par(mfrow=c(2,1))
 
-plot(ts_agro,
-     ylab="?rea de agricultura",
-     xlab="Ano",
-     main = "",
-     type = "l")
-lines(ts_agro-fit4$residuals,
-      col="Red",
-      type = "l")
-legend("topleft", c("Efetivo","Ajustado"),
-       col = c("black","red"), lty=c(1,1), bty="n",cex=0.6,lwd=2)
 
-base_foco <- base[-c(1:14),c(1,6)]
-base_foco$focos_aju <- fit5$residuals
+res_foco <- data.frame(Ano=base$Ano[-c(1:14)], residuos=fit5$fitted)
+gea5 <- base[-c(1:14),] |> 
+  ggplot(aes(x=Ano, y=`Focos`/1000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=res_foco, aes(y=x), col="red")+
+  geom_line(data=res_foco, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Quantidade de focos de queimadas")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
 
-
-
-plot(ts_focos,
-     ylab="Quantidade de focos de queimadas",
-     xlab="Ano",
-     main = "",
-     type = "l",
-     xaxt="n")
-lines(ts_focos-fit5$residuals,
-      col="Red",
-      type = "l")
-legend("topright", c("Efetivo","Ajustado"),
-       col = c("black","red"), lty=c(1,1), bty="n",cex=0.6,lwd=2)
-
-fit5 <- Arima(ts_focos, order = c(0,1,0))
+pdf("slide_2.pdf")
+grid.arrange(gea4,gea5 ,ncol=1,nrow=2)
 dev.off()
 
-
+#todos juntos
+pdf("efe_aju.pdf")
+grid.arrange(gea1,gea2,gea3,gea4,gea5 ,ncol=2,nrow=3)
+dev.off()
