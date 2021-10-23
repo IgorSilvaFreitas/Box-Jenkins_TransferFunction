@@ -622,8 +622,8 @@ ccf(modelo_florfoco$residuals, arima_foco$residuals, xlim=c(0,13))
 
 
 library(TSA)
-fitduplo <- arimax(ts_flor, order=c(0,2,1), xtransf=ts_past, transfer=list(c(0,0)))
-
+#fitduplo <- arimax(ts_flor, order=c(0,2,1), xtransf=ts_past, transfer=list(c(0,0)))
+fitduplo <- Arima(ts_flor[-c(1,2)], order=c(0,2,1), xreg=ts_past_est)
 
 res_duplo <- data.frame(Ano=base$Ano[-36], residuos=fitted(fitduplo))
 gduplo <- base[-36,] |> 
@@ -714,8 +714,8 @@ res_foco |>
 
 
 
-plot_duplo <- forecast(fitduplo, h=11)
-prev_duplo <- data.frame(Ano=c(2020:2030), previsao=plot_duplo$mean)
+plot_duplo <- forecast(fitduplo, h=11, xreg=ts_past_est)
+prev_duplo <- data.frame(Ano=c(2020:2030), previsao=plot_duplo$mean[1:11])
 res_duplo |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
@@ -726,3 +726,6 @@ res_duplo |>
   labs(y="Floresta Nativa", x="Ano")+
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
+plot_duplo$mean
+
+fitted(fitduplo)
