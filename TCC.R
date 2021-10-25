@@ -640,6 +640,10 @@ gduplo <- base[-36,] |>
 accuracy(ts_flor,fitted(fitduplo))
 
 
+#
+Box.test(fitduplo$residuals, lag = 1, type = "Box-Pierce", fitdf = 0)
+
+shapiro.test(fitduplo$residual)
 
 ## Previsão com modelos univariados
 
@@ -728,4 +732,4 @@ res_duplo |>
   theme(legend.position = "top", text = element_text(size=15))
 plot_duplo$mean
 
-fitted(fitduplo)
+
