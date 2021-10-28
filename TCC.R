@@ -733,3 +733,33 @@ res_duplo |>
 plot_duplo$mean
 
 
+#HoltWinter
+fithw <- HoltWinters(x=ts_focos,gamma=F)
+fithw
+plot(fithw)
+
+
+
+#arfima
+library(arfima)
+fitarfima <- arfima(ts_focos, order=c(2,1,1))
+fitted(fitarfima)
+
+plot(tacvf(fitarfima, maxlag=25))
+plot(ts_focos)
+
+
+#lm
+fitlm <- lm(Focos/1000, data=base)
+fittedlm <- data.frame(x=fitted(fitlm),Ano=base$Ano[-c(1:14)])
+
+base[-c(1:14),] |> 
+  ggplot(aes(x=Ano, y=Focos/1000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=fittedlm, aes(y=x), col="red")+
+  geom_line(data=fittedlm, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Quantidade de focos de queimadas")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
