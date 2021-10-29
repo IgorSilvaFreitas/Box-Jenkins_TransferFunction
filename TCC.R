@@ -390,7 +390,8 @@ plot(facp_focos, xlab="Defasagem", ylab="FACP", main = "")
 #funções das segundas diferenças ∇2𝑧
 #𝑡 (não mostrado) eram bastante pequenos, sugerindo um branco
 #processo de ruído para as segundas diferenças (box,jenkins,lung,outro)
-install.packages("forecast")
+
+#install.packages("forecast")
 library(forecast)
 
 ## Verificação dos Melhores modelos
@@ -625,7 +626,8 @@ library(TSA)
 #fitduplo <- arimax(ts_flor, order=c(0,2,1), xtransf=ts_past, transfer=list(c(0,0)))
 fitduplo <- Arima(ts_flor[-c(1,2)], order=c(0,2,1), xreg=ts_past_est)
 
-res_duplo <- data.frame(Ano=base$Ano[-36], residuos=fitted(fitduplo))
+res_duplo <- data.frame(Ano=base$Ano[-c(1,2,36)], x=fitted(fitduplo))
+pdf("flor_past_model.pdf")
 gduplo <- base[-36,] |> 
   ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
   geom_point(col="black")+
@@ -637,10 +639,14 @@ gduplo <- base[-36,] |>
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
+
+dev.off()
+
+#Métricas de qualidade de ajuste
 accuracy(ts_flor,fitted(fitduplo))
 
 
-#
+# Validação do modelo
 Box.test(fitduplo$residuals, lag = 1, type = "Box-Pierce", fitdf = 0)
 
 shapiro.test(fitduplo$residual)
@@ -763,3 +769,27 @@ base[-c(1:14),] |>
   labs(y="Quantidade de focos de queimadas")+
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
+
+
+## Utilizando todas as séries temporais para predição do desmatamento
+auxiliar <- data.frame(ts_past,ts_gado,ts_agro)
+fittudo <- arimax(ts_flor[-36], order=c(0,2,1), xtransf=auxiliar,
+                  transfer=list(c(0,0),c(0,2),c(0,2)), metho="ML")
+
+res_tudo <- data.frame(Ano=base$Ano[-36], x=fitted(fittudo))
+gtudo <- base[-36,] |> 
+  ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=res_tudo, aes(y=x), col="red")+
+  geom_line(data=res_tudo, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Quantidade de focos de queimadas")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+
+
+#Métricas de qualidade de ajuste
+accuracy(ts_flor[-c(1,2)],na.omit(fitted(fittudo)))
+
