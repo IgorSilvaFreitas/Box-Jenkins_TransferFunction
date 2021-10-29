@@ -623,12 +623,12 @@ ccf(modelo_florfoco$residuals, arima_foco$residuals, xlim=c(0,13))
 
 
 library(TSA)
-#fitduplo <- arimax(ts_flor, order=c(0,2,1), xtransf=ts_past, transfer=list(c(0,0)))
-fitduplo <- Arima(ts_flor[-c(1,2)], order=c(0,2,1), xreg=ts_past_est)
+fitduplo <- arimax(ts_flor, order=c(0,2,1), xtransf=ts_past, transfer=list(c(0,0)))
 
-res_duplo <- data.frame(Ano=base$Ano[-c(1,2,36)], x=fitted(fitduplo))
+res_duplo <- data.frame(Ano=base$Ano[-c(36)], x=fitted(fitduplo))
+res_duplo <- res_duplo |> rename(x=eval.object.call.x.)
 pdf("flor_past_model.pdf")
-gduplo <- base[-36,] |> 
+base[-36,] |> 
   ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -643,7 +643,7 @@ gduplo <- base[-36,] |>
 dev.off()
 
 #Métricas de qualidade de ajuste
-accuracy(ts_flor,fitted(fitduplo))
+accuracy(ts_flor[c()],fitted(fitduplo))
 
 
 # Validação do modelo
@@ -651,11 +651,14 @@ Box.test(fitduplo$residuals, lag = 1, type = "Box-Pierce", fitdf = 0)
 
 shapiro.test(fitduplo$residual)
 
+
+
+
 ## Previsão com modelos univariados
 
 plot_flor <- forecast(fit11, h=11)
 prev_flor <- data.frame(Ano=c(2020:2030), previsao=plot_flor$mean)
-res_flor |> 
+prev1 <- res_flor |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -668,7 +671,7 @@ res_flor |>
 
 plot_past <- forecast(fit222, h=11)
 prev_past <- data.frame(Ano=c(2020:2030), previsao=plot_past$mean)
-res_past |> 
+prev2 <- res_past |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -682,7 +685,7 @@ res_past |>
 
 plot_gado <- forecast(fit3, h=11)
 prev_gado <- data.frame(Ano=c(2020:2030), previsao=plot_gado$mean)
-res_gado |> 
+prev3 <- res_gado |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -696,7 +699,7 @@ res_gado |>
 
 plot_agro <- forecast(fit4, h=11)
 prev_agro <- data.frame(Ano=c(2020:2030), previsao=plot_agro$mean)
-res_agro |> 
+prev4 <- res_agro |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -709,9 +712,9 @@ res_agro |>
 
 
 
-plot_foco <- forecast(fit5, h=11)
-prev_foco <- data.frame(Ano=c(2020:2030), previsao=plot_foco$mean)
-res_foco |> 
+plot_foco <- forecast(fit5, h=10)
+prev_foco <- data.frame(Ano=c(2021:2030), previsao=plot_foco$mean)
+prev5 <- res_foco |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -722,10 +725,14 @@ res_foco |>
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
+pdf("previsões.pdf")
+grid.arrange(prev1,prev2,prev3,prev4,prev5 ,ncol=2,nrow=3)
+dev.off()
 
 
-plot_duplo <- forecast(fitduplo, h=11, xreg=ts_past_est)
-prev_duplo <- data.frame(Ano=c(2020:2030), previsao=plot_duplo$mean[1:11])
+pdf("prev_duplo.pdf")
+plot_duplo <- forecast(fitted(fitduplo), h=11)
+prev_duplo <- data.frame(Ano=c(2020:2030), previsao=plot_duplo$mean)
 res_duplo |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
@@ -736,10 +743,16 @@ res_duplo |>
   labs(y="Floresta Nativa", x="Ano")+
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
-plot_duplo$mean
+dev.off()
 
 
-#HoltWinter
+
+#---------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
+## Tentando modelo melhor ajustado para a série de focos de queimada
+
+
+#Exponencial suavizada
 fithw <- HoltWinters(x=ts_focos,gamma=F)
 fithw
 plot(fithw)
@@ -755,23 +768,11 @@ plot(tacvf(fitarfima, maxlag=25))
 plot(ts_focos)
 
 
-#lm
-fitlm <- lm(Focos/1000, data=base)
-fittedlm <- data.frame(x=fitted(fitlm),Ano=base$Ano[-c(1:14)])
+# Nenhum se ajustou muito bem
+#---------------------------------------------------------------------------------------------
+#---------------------------------------------------------------------------------------------
 
-base[-c(1:14),] |> 
-  ggplot(aes(x=Ano, y=Focos/1000))+
-  geom_point(col="black")+
-  geom_line(aes(colour="black"))+
-  geom_point(data=fittedlm, aes(y=x), col="red")+
-  geom_line(data=fittedlm, aes(y=x, colour="red"))+
-  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
-  labs(y="Quantidade de focos de queimadas")+
-  theme_classic()+
-  theme(legend.position = "top", text = element_text(size=15))
-
-
-## Utilizando todas as séries temporais para predição do desmatamento
+## Utilizando todas as séries temporais para predição do desmatamento menos focos
 auxiliar <- data.frame(ts_past,ts_gado,ts_agro)
 fittudo <- arimax(ts_flor[-36], order=c(0,2,1), xtransf=auxiliar,
                   transfer=list(c(0,0),c(0,2),c(0,2)), metho="ML")
@@ -793,3 +794,68 @@ gtudo <- base[-36,] |>
 #Métricas de qualidade de ajuste
 accuracy(ts_flor[-c(1,2)],na.omit(fitted(fittudo)))
 
+## AIC
+fittudo$aic
+# 309.3648
+
+## Previsão
+pdf("prev_tudo.pdf")
+plot_tudo <- forecast(fitted(fittudo), h=11)
+prev_tudo <- data.frame(Ano=c(2020:2030), previsao=plot_tudo$mean)
+res_tudo |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_tudo, aes(y=previsao), col="blue")+
+  geom_line(data=prev_tudo, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+dev.off()
+
+## Utilizando todas as séries temporais para predição do desmatamento inclusive focos
+auxiliar2 <- na.omit(base)
+auxiliar2 <- as.data.frame(auxiliar2)
+auxiliar2 <- auxiliar2 |>  select(-c(Ano,`Floresta Natural(Ha)`,Madeira))
+fitfull <- arimax(ts_flor[-c(1:14,36)], order=c(0,2,1), xtransf=auxiliar2,
+                  transfer=list(c(0,0),c(0,2),c(0,2),c(0,2)), metho="ML")
+
+res_full <- data.frame(Ano=base$Ano[-c(1:14,36)], x=fitted(fitfull))
+gfull <- base[-c(1:14,36),] |> 
+  ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=res_full, aes(y=x), col="red")+
+  geom_line(data=res_full, aes(y=x, colour="red"))+
+  scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
+  labs(y="Quantidade de focos de queimadas")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+
+
+
+#Métricas de qualidade de ajuste
+accuracy(ts_flor[-c(1:16,36)],na.omit(fitted(fitfull)))
+
+
+## AIC
+fitfull$aic
+#153.4141
+
+
+## Previsão
+pdf("prev_full.pdf")
+plot_full <- forecast(fitted(fitfull), h=11)
+prev_full <- data.frame(Ano=c(2020:2030), previsao=plot_full$mean)
+res_full |> 
+  ggplot(aes(x=Ano, y=x))+
+  geom_point(col="black")+
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_full, aes(y=previsao), col="blue")+
+  geom_line(data=prev_full, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+dev.off()
