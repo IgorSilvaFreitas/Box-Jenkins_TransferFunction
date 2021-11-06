@@ -913,7 +913,7 @@ plot(ts_focos)
 # Nenhum se ajustou muito bem
 #---------------------------------------------------------------------------------------------
 #---------------------------------------------------------------------------------------------
-#TF com pastagem e 
+#TF com pastagem e m^3 de madeira
 
 auxiliar <- data.frame(ts_past,ts_made)
 auxiliar <- na.omit(auxiliar)
@@ -949,6 +949,17 @@ shapiro.test(fittriplo$residual)
 
 
 
+#---------------------------------------------------------------------------------------------
+#TF com m^3 de madeira
+fitduplo2 <- arimax(ts_flor[,-36], order=c(0,2,1), xtransf=ts_made,
+                   transfer=list(c(0,0)))
+
+res_duplo2 <- data.frame(Ano=base$Ano[-c(36)], x=fitted(fitduplo2))
+
+#Métricas de qualidade de ajuste
+accuracy(ts_flor,fitted(fitduplo2))
+fitduplo2$aic
+#379.4998
 
 #---------------------------------------------------------------------------------------------
 
