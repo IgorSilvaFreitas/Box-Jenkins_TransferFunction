@@ -1,10 +1,10 @@
 #Códigos R do TCC 
 
 #Setando a pasta com as bases de dados
-setwd("D:/Users/Igor/Documents/TCC1/AS bases utilizadas")
+setwd("C:/Users/igorg/Documents/TCC1/AS bases utilizadas")
 
 #Chamando a base de dados
-base <- readxl::read_excel("D:/Users/Igor/Documents/TCC1/AS bases utilizadas/Dados_melhorados.xlsx")
+base <- readxl::read_excel("Dados_melhorados.xlsx")
 
 ## Gráficos temporalmente dependente para as séries
 library(ggplot2)
