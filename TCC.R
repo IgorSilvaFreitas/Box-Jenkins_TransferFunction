@@ -780,7 +780,7 @@ prev2 <- prev_past_agr |>
                     ymax = max.95.), 
                 col="Red",width = .1)+
   scale_color_manual(name = "", values = c("Previsão"="blue"))+
-  labs(y="Floresta Nativa", x="Ano")+
+  labs(y="Pastagem", x="Ano")+
   
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
@@ -819,7 +819,7 @@ prev4 <- prev_agro_agr |>
                     ymax = max.95.), 
                 col="Red",width = .1)+
   scale_color_manual(name = "", values = c("Previsão"="blue"))+
-  labs(y="Floresta Nativa", x="Ano")+
+  labs(y="Agricultura", x="Ano")+
   
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
@@ -839,7 +839,7 @@ prev5 <- prev_foco_agr |>
                     ymax = max.95.), 
                 col="Red",width = .1)+
   scale_color_manual(name = "", values = c("Previsão"="blue"))+
-  labs(y="Floresta Nativa", x="Ano")+
+  labs(y="Focos de queimadas", x="Ano")+
   
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
@@ -858,7 +858,7 @@ prev6 <- prev_made_agr |>
                     ymax = max.95.), 
                 col="Red",width = .1)+
   scale_color_manual(name = "", values = c("Previsão"="blue"))+
-  labs(y="Floresta Nativa", x="Ano")+
+  labs(y="Extração de madeira", x="Ano")+
   
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
