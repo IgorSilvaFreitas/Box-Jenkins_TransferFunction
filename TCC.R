@@ -135,7 +135,7 @@ ts_past <- ts(base[-36,3], start=1985, end = 2019, frequency=1)
 
 ts_flor <- ts(base[-36,4], start=1985, end = 2019, frequency=1)
 
-ts_gado <- ts(base[-36,5], start=1985, end = 2019, frequency=1)
+ts_gado <- ts(base[,5], start=1985, end = 2020, frequency=1)
 
 ts_focos <- ts(base[-c(1:14),6], start=1999, end = 2020, frequency=1)
 
