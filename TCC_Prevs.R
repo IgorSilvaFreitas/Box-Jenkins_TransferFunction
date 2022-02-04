@@ -129,67 +129,95 @@ library(tseries)# carregando o pacote séries temporais
 # 
 # dados.ts <- ts(base)
 
-ts_agro <- ts(base[-36,2], start=1985, end = 2019, frequency=1)
+#Treino
+ts_agro_trei <- ts(base[-c(31,32,33,34,35,36),2], start=1985, end = 2014, frequency=1)
 
-ts_past <- ts(base[-36,3], start=1985, end = 2019, frequency=1)
+ts_past_trei <- ts(base[-c(31,32,33,34,35,36),3], start=1985, end = 2014, frequency=1)
 
-ts_flor <- ts(base[-36,4], start=1985, end = 2019, frequency=1)
+ts_flor_trei <- ts(base[-c(31,32,33,34,35,36),4], start=1985, end = 2014, frequency=1)
 
-ts_gado <- ts(base[-36,5], start=1985, end = 2019, frequency=1)
+ts_gado_trei <- ts(base[-c(31,32,33,34,35,36),5], start=1985, end = 2014, frequency=1)
 
-ts_focos <- ts(base[-c(1:14),6], start=1999, end = 2020, frequency=1)
+ts_focos_trei <- ts(base[-c(1:14,31,32,33,34,35,36),6], start=1999, end = 2014, frequency=1)
 
-ts_made <- ts(base[-1,7], start=1986, end = 2020, frequency=1)
+ts_made_trei <- ts(base[-c(1,31,32,33,34,35,36),7], start=1986, end = 2014, frequency=1)
+
+
+#Teste
+ts_agro_test <- ts(base[c(31,32,33,34,35),2], start = 2015, end = 2019, frequency=1)
+
+ts_past_test <- ts(base[c(31,32,33,34,35),3], start = 2015, end = 2019, frequency=1)
+
+ts_flor_test <- ts(base[c(31,32,33,34,35),4], start = 2015, end = 2019, frequency=1)
+
+ts_gado_test <- ts(base[c(31,32,33,34,35),5], start = 2015, end = 2019, frequency=1)
+
+ts_focos_test <- ts(base[c(31,32,33,34,35),6], start = 2015, end = 2019, frequency=1)
+
+ts_made_test <- ts(base[c(31,32,33,34,35),7], start = 2015, end = 2019, frequency=1)
+
+
 
 #Transformação devido a grandeza dos números
-ts_agro <- ts_agro/10000
+ts_agro_trei <- ts_agro_trei/10000
 
-ts_past <- ts_past/10000
+ts_past_trei <- ts_past_trei/10000
 
-ts_flor <- ts_flor/10000
+ts_flor_trei <- ts_flor_trei/10000
 
-ts_gado <- ts_gado/10000
+ts_gado_trei <- ts_gado_trei/10000
 
-ts_focos <- ts_focos/1000
+ts_focos_trei <- ts_focos_trei/1000
 
-ts_made <- ts_made/10000
+ts_made_trei <- ts_made_trei/10000
+
+
+ts_agro_test <- ts_agro_test/10000
+
+ts_past_test <- ts_past_test/10000
+
+ts_flor_test <- ts_flor_test/10000
+
+ts_gado_test <- ts_gado_test/10000
+
+ts_focos_test <- ts_focos_test/1000
+
+ts_made_test <- ts_made_test/10000
 ##-----------------------------------------------------------------------------------
 
 #Verificando se as séries são estacionárias através do teste aumentado de Dickey-Fuller
 #adf.test(na.omit(diff(dados.ts[,"Agricultura(Ha)"])),k=1, alternative = "stationary")
 #Lavouras
-adf.test(ts_agro,k=1, alternative = "stationary")
-adf.test(diff(ts_agro), k=1, alternative = "stationary")
-
-
+adf.test(ts_agro_trei,k=1, alternative = "stationary")
+adf.test(diff(ts_agro_trei), k=1, alternative = "stationary")
 
 
 #Pastagem
-adf.test(ts_past,k=1, alternative = "stationary")
-adf.test(diff(ts_past, differences = 1), k=1, alternative = "stationary")
-adf.test(diff(ts_past, differences = 2), k=1, alternative = "stationary")
+adf.test(ts_past_trei,k=1, alternative = "stationary")
+adf.test(diff(ts_past_trei, differences = 1), k=1, alternative = "stationary")
+adf.test(diff(ts_past_trei, differences = 2), k=1, alternative = "stationary")
 
 
 #Floresta nativa
-adf.test(ts_flor,k=1, alternative = "stationary")
-adf.test(diff(ts_flor, differences = 1), k=1, alternative = "stationary")
-adf.test(diff(ts_flor, differences = 2), k=1, alternative = "stationary")
+adf.test(ts_flor_trei,k=1, alternative = "stationary")
+adf.test(diff(ts_flor_trei, differences = 1), k=1, alternative = "stationary")
+adf.test(diff(ts_flor_trei, differences = 2), k=1, alternative = "stationary")
 
 
 #Efetivo bovino
-adf.test(ts_gado,k=1, alternative = "stationary")
-adf.test(diff(ts_gado, differences = 1), k=1, alternative = "stationary")
-adf.test(diff(ts_gado, differences = 2), k=1, alternative = "stationary")
+adf.test(ts_gado_trei,k=1, alternative = "stationary")
+adf.test(diff(ts_gado_trei, differences = 1), k=1, alternative = "stationary")
+adf.test(diff(ts_gado_trei, differences = 2), k=1, alternative = "stationary")
 
 
 #Quantidade de focos de incendio
-adf.test(ts_focos,k=1, alternative = "stationary")
-adf.test(diff(ts_focos), k=1, alternative = "stationary")
+adf.test(ts_focos_trei,k=1, alternative = "stationary")
+adf.test(diff(ts_focos_trei), k=1, alternative = "stationary")
 
-#Extra��o de madeira
-adf.test(ts_made,k=1, alternative = "stationary")
-adf.test(diff(ts_made), k=1, alternative = "stationary")
-adf.test(diff(ts_made, differences = 2), k=1, alternative = "stationary")
+#Extra��o de
+adf.test(ts_made_trei,k=1, alternative = "stationary")
+adf.test(diff(ts_made_trei), k=1, alternative = "stationary")
+adf.test(diff(ts_made_trei, differences = 2), k=1, alternative = "stationary")
 ##-----------------------------------------------------------------------------------
 
 #Gráficos das primeiras diferenças
@@ -416,47 +444,47 @@ dev.off()
 ## Verificando autocorrelação e autocorrelação parcial
 
 #Floresta nativa
-fac_flor <-acf(diff(ts_flor,differences = 2))
-facp_flor <-pacf(diff(ts_flor,differences = 2))
+fac_flor <-acf(diff(ts_flor_trei,differences = 2))
+facp_flor <-pacf(diff(ts_flor_trei,differences = 2))
 par(mfrow=c(2,1))
 plot(fac_flor, xlab="Defasagem", ylab="FAC", main = "")
 plot(facp_flor, xlab="Defasagem", ylab="FACP", main = "")
 
 
 #Pastagem
-fac_past <- acf(diff(ts_past, differences = 2))
-facp_past <- pacf(diff(ts_past, differences = 2))
+fac_past <- acf(diff(ts_past_trei, differences = 2))
+facp_past <- pacf(diff(ts_past_trei, differences = 2))
 par(mfrow=c(2,1))
 plot(fac_past, xlab="Defasagem", ylab="FAC", main = "")
 plot(facp_past, xlab="Defasagem", ylab="FACP", main = "")
 
 
 #Efetivo bovino
-fac_gado <- acf(diff(ts_gado, differences = 2))
-facp_gado <- pacf(diff(ts_gado, differences = 2))
+fac_gado <- acf(diff(ts_gado_trei, differences = 2))
+facp_gado <- pacf(diff(ts_gado_trei, differences = 2))
 par(mfrow=c(2,1))
 plot(fac_gado, xlab="Defasagem", ylab="FAC", main = "")
 plot(facp_gado, xlab="Defasagem", ylab="FACP", main = "")
 
 ## Madeira
-fac_made <- acf(diff(ts_made, differences = 2))
-facp_made <- pacf(diff(ts_made, differences = 2))
+fac_made <- acf(diff(ts_made_trei, differences = 2))
+facp_made <- pacf(diff(ts_made_trei, differences = 2))
 par(mfrow=c(2,1))
 plot(fac_made, xlab="Defasagem", ylab="FAC", main = "")
 plot(facp_made, xlab="Defasagem", ylab="FACP", main = "")
 
 
 #Agricultura
-fac_agro <- acf(diff(ts_agro, differences = 1))
-facp_agro <- pacf(diff(ts_agro, differences = 1))
+fac_agro <- acf(diff(ts_agro_trei, differences = 1))
+facp_agro <- pacf(diff(ts_agro_trei, differences = 1))
 par(mfrow=c(2,1))
 plot(fac_agro, xlab="Defasagem", ylab="FAC", main = "")
 plot(facp_agro, xlab="Defasagem", ylab="FACP", main = "")
 
 
 #Focos de queimadas
-fac_focos <- acf(diff(ts_focos, differences = 1))
-facp_focos <- pacf(diff(ts_focos, differences = 1))
+fac_focos <- acf(diff(ts_focos_trei, differences = 1))
+facp_focos <- pacf(diff(ts_focos_trei, differences = 1))
 par(mfrow=c(2,1))
 plot(fac_focos, xlab="Defasagem", ylab="FAC", main = "")
 plot(facp_focos, xlab="Defasagem", ylab="FACP", main = "")
@@ -477,107 +505,107 @@ library(forecast)
 ## Verificação dos Melhores modelos
 
 #Floresta nativa, d=2
-Arima(ts_flor, order = c(0,2,0))
-Arima(ts_flor, order = c(0,2,1))
-Arima(ts_flor, order = c(1,2,0))
-Arima(ts_flor, order = c(1,2,1))
-Arima(ts_flor, order = c(0,2,2))
-Arima(ts_flor, order = c(2,2,0))
-Arima(ts_flor, order = c(1,2,2))
-Arima(ts_flor, order = c(2,2,1))
-Arima(ts_flor, order = c(2,2,2))
+Arima(ts_flor_trei, order = c(0,2,0))
+Arima(ts_flor_trei, order = c(0,2,1))
+Arima(ts_flor_trei, order = c(1,2,0))
+Arima(ts_flor_trei, order = c(1,2,1))
+Arima(ts_flor_trei, order = c(0,2,2))
+Arima(ts_flor_trei, order = c(2,2,0))
+Arima(ts_flor_trei, order = c(1,2,2))
+Arima(ts_flor_trei, order = c(2,2,1))
+Arima(ts_flor_trei, order = c(2,2,2))
 
 
 #Área de pastagem, d=2
-Arima(ts_past, order = c(0,2,0))
-Arima(ts_past, order = c(0,2,1))
-Arima(ts_past, order = c(1,2,0))
-Arima(ts_past, order = c(1,2,1))
-Arima(ts_past, order = c(0,2,2))
-Arima(ts_past, order = c(2,2,0))
-Arima(ts_past, order = c(1,2,2))
-Arima(ts_past, order = c(2,2,1))
-Arima(ts_past, order = c(2,2,2))
+Arima(ts_past_trei, order = c(0,2,0))
+Arima(ts_past_trei, order = c(0,2,1))
+Arima(ts_past_trei, order = c(1,2,0))
+Arima(ts_past_trei, order = c(1,2,1))
+Arima(ts_past_trei, order = c(0,2,2))
+Arima(ts_past_trei, order = c(2,2,0))
+Arima(ts_past_trei, order = c(1,2,2))
+Arima(ts_past_trei, order = c(2,2,1))
+Arima(ts_past_trei, order = c(2,2,2))
 
 
 ##Metros cúbicos de madeira, d=2
-Arima(ts_made, order = c(0,2,0))
-Arima(ts_made, order = c(0,2,1))
-Arima(ts_made, order = c(1,2,0))
-Arima(ts_made, order = c(1,2,1))
-Arima(ts_made, order = c(0,2,2))
-Arima(ts_made, order = c(2,2,0))
-Arima(ts_made, order = c(1,2,2))
-Arima(ts_made, order = c(2,2,1))
-Arima(ts_made, order = c(2,2,2))
+Arima(ts_made_trei, order = c(0,2,0))
+Arima(ts_made_trei, order = c(0,2,1))
+Arima(ts_made_trei, order = c(1,2,0))
+Arima(ts_made_trei, order = c(1,2,1))
+Arima(ts_made_trei, order = c(0,2,2))
+Arima(ts_made_trei, order = c(2,2,0))
+Arima(ts_made_trei, order = c(1,2,2))
+Arima(ts_made_trei, order = c(2,2,1))
+Arima(ts_made_trei, order = c(2,2,2))
 
 
 #Efetivo bovino, d=2
-Arima(ts_gado, order = c(0,2,0))
-Arima(ts_gado, order = c(0,2,1))
-Arima(ts_gado, order = c(1,2,0))
-Arima(ts_gado, order = c(1,2,1))
-Arima(ts_gado, order = c(0,2,2))
-Arima(ts_gado, order = c(2,2,0))
-Arima(ts_gado, order = c(1,2,2))
-Arima(ts_gado, order = c(2,2,1))
-Arima(ts_gado, order = c(2,2,2))
+Arima(ts_gado_trei, order = c(0,2,0))
+Arima(ts_gado_trei, order = c(0,2,1))
+Arima(ts_gado_trei, order = c(1,2,0))
+Arima(ts_gado_trei, order = c(1,2,1))
+Arima(ts_gado_trei, order = c(0,2,2))
+Arima(ts_gado_trei, order = c(2,2,0))
+Arima(ts_gado_trei, order = c(1,2,2))
+Arima(ts_gado_trei, order = c(2,2,1))
+Arima(ts_gado_trei, order = c(2,2,2))
 
 
 #Área de agricultura, d=1
-Arima(ts_agro, order = c(0,1,0))
-Arima(ts_agro, order = c(0,1,1))
-Arima(ts_agro, order = c(1,1,0))
-Arima(ts_agro, order = c(1,1,1))
-Arima(ts_agro, order = c(0,1,2))
-Arima(ts_agro, order = c(2,1,0))
-Arima(ts_agro, order = c(1,1,2), method = "ML")
-Arima(ts_agro, order = c(2,1,1), method = "ML")
-Arima(ts_agro, order = c(2,1,2), method = "ML")
+Arima(ts_agro_trei, order = c(0,1,0))
+Arima(ts_agro_trei, order = c(0,1,1))
+Arima(ts_agro_trei, order = c(1,1,0), method = "ML")
+Arima(ts_agro_trei, order = c(1,1,1), method = "ML")
+Arima(ts_agro_trei, order = c(0,1,2), method = "ML")
+Arima(ts_agro_trei, order = c(2,1,0), method = "ML")
+Arima(ts_agro_trei, order = c(1,1,2), method = "ML")
+Arima(ts_agro_trei, order = c(2,1,1), method = "ML")
+Arima(ts_agro_trei, order = c(2,1,2), method = "ML")
 
 #Quantidade de focos de queimadas, d=1
-Arima(ts_focos, order = c(0,1,0))
-Arima(ts_focos, order = c(0,1,1))
-Arima(ts_focos, order = c(1,1,0))
-Arima(ts_focos, order = c(1,1,1))
-Arima(ts_focos, order = c(0,1,2))
-Arima(ts_focos, order = c(2,1,0))
-Arima(ts_focos, order = c(1,1,2))
-Arima(ts_focos, order = c(2,1,1), method = "ML")
-Arima(ts_focos, order = c(2,1,2))
+Arima(ts_focos_trei, order = c(0,1,0))
+Arima(ts_focos_trei, order = c(0,1,1))
+Arima(ts_focos_trei, order = c(1,1,0))
+Arima(ts_focos_trei, order = c(1,1,1))
+Arima(ts_focos_trei, order = c(0,1,2))
+Arima(ts_focos_trei, order = c(2,1,0))
+Arima(ts_focos_trei, order = c(1,1,2))
+Arima(ts_focos_trei, order = c(2,1,1), method = "ML")
+Arima(ts_focos_trei, order = c(2,1,2))
 
 ##-----------------------------------------------------------------------------------
 
 #Medidas de qualidade de ajuste
-fit1 <- Arima(ts_flor, order = c(0,2,0))
-accuracy(ts_flor,fit1$fitted)
+fit1 <- Arima(ts_flor_trei, order = c(0,2,0))
+accuracy(ts_flor_trei,fit1$fitted)
 
-fit11 <- Arima(ts_flor, order = c(0,2,1))
-accuracy(ts_flor,fit11$fitted)
+fit11 <- Arima(ts_flor_trei, order = c(0,2,1))
+accuracy(ts_flor_trei,fit11$fitted)
 
-fit111 <- Arima(ts_flor, order = c(1,2,0))
-accuracy(ts_flor,fit111$fitted)
+fit111 <- Arima(ts_flor_trei, order = c(1,2,0))
+accuracy(ts_flor_trei,fit111$fitted)
 
-fit2 <- Arima(ts_past, order = c(0,2,0))
-accuracy(ts_past,fit2$fitted)
+fit2 <- Arima(ts_past_trei, order = c(0,2,0))
+accuracy(ts_past_trei,fit2$fitted)
 
-fit22 <- Arima(ts_past, order = c(0,2,2))
-accuracy(ts_past,fit22$fitted)
+fit22 <- Arima(ts_past_trei, order = c(0,2,2))
+accuracy(ts_past_trei,fit22$fitted)
 
-fit222 <- Arima(ts_past, order = c(2,2,0))
-accuracy(ts_past,fit222$fitted)
+fit222 <- Arima(ts_past_trei, order = c(2,2,0))
+accuracy(ts_past_trei,fit222$fitted)
 
-fit3 <- Arima(ts_gado, order = c(1,2,1))
-accuracy(ts_gado,fit3$fitted)
+fit3 <- Arima(ts_gado_trei, order = c(1,2,1))
+accuracy(ts_gado_trei,fit3$fitted)
 
-fit4 <- Arima(ts_agro, order = c(1,1,0))
-accuracy(ts_agro,fit4$fitted)
+fit4 <- Arima(ts_agro_trei, order = c(1,1,0), method = "ML")
+accuracy(ts_agro_trei,fit4$fitted)
 
-fit5 <- Arima(ts_focos, order = c(2,1,1), method = "ML")
-accuracy(ts_focos,fit5$fitted)
+fit5 <- Arima(ts_focos_trei, order = c(1,1,1), method = "ML")
+accuracy(ts_focos_trei,fit5$fitted)
 
-fit6 <- Arima(ts_made, order = c(0,2,1))
-accuracy(ts_made, fit6$fitted)
+fit6 <- Arima(ts_made_trei, order = c(0,2,1))
+accuracy(ts_made_trei, fit6$fitted)
 
 ##-----------------------------------------------------------------------------------
 
@@ -602,7 +630,7 @@ shapiro.test(fit6$residual)
 ## Gráficos de valor efetivo vs valor ajustado
 
 #Floresta Nativa
-res_flor <- data.frame(Ano=base$Ano[-36], residuos=fit11$fitted)
+res_flor <- data.frame(Ano=base$Ano[-c(31,32,33,34,35,36)], residuos=fit11$fitted)
 gea1 <- base |> 
   ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
   geom_point(col="black")+
@@ -615,7 +643,7 @@ gea1 <- base |>
   theme(legend.position = "top", text = element_text(size=15))
 
 #Área de pastagem
-res_past <- data.frame(Ano=base$Ano[-36], residuos=fit222$fitted)
+res_past <- data.frame(Ano=base$Ano[-c(31,32,33,34,35,36)], residuos=fit222$fitted)
 gea2 <- base |> 
   ggplot(aes(x=Ano, y=`Pastagem(Ha)`/10000))+
   geom_point(col="black")+
@@ -642,7 +670,7 @@ gea3 <- base |>
 
 
 #Metros cúbicos de madeira
-res_made <- data.frame(Ano=c(1986:2020), x=fit6$fitted)
+res_made <- data.frame(Ano=c(1986:2014), x=fit6$fitted)
 gea6 <- base |> 
   ggplot(aes(x=Ano, y=Madeira/10000))+
   geom_point(col="black")+
@@ -662,7 +690,7 @@ dev.off()
 
 
 #Área de Agricultura
-res_agro <- data.frame(Ano=base$Ano[-36], residuos=fit4$fitted)
+res_agro <- data.frame(Ano=base$Ano[-c(31,32,33,34,35,36)], residuos=fit4$fitted)
 gea4 <- base |> 
   ggplot(aes(x=Ano, y=`Agricultura(Ha)`/10000))+
   geom_point(col="black")+
@@ -676,7 +704,7 @@ gea4 <- base |>
 
 
 #Focos de queimada
-res_foco <- data.frame(Ano=base$Ano[-c(1:14)], residuos=fit5$fitted)
+res_foco <- data.frame(Ano=base$Ano[-c(1:14,31,32,33,34,35,36)], residuos=fit5$fitted)
 gea5 <- base[-c(1:14),] |> 
   ggplot(aes(x=Ano, y=`Focos`/1000))+
   geom_point(col="black")+
@@ -703,42 +731,42 @@ dev.off()
 
 #Transformando todas as séries em estacionárias
 
-ts_flor_est <- diff(ts_flor, differences = 2)
-ts_past_est <- diff(ts_past, differences = 2)
-ts_gado_est <- diff(ts_gado, differences = 2)
-ts_made_est <- diff(ts_made, differences = 2)
-ts_agro_est <- diff(ts_agro, differences = 1)
-ts_foco_est <- diff(ts_focos, differences = 1)
+ts_flor_trei_est <- diff(ts_flor_trei, differences = 2)
+ts_past_trei_est <- diff(ts_past_trei, differences = 2)
+ts_gado_trei_est <- diff(ts_gado_trei, differences = 2)
+ts_made_trei_est <- diff(ts_made_trei, differences = 2)
+ts_agro_trei_est <- diff(ts_agro_trei, differences = 1)
+ts_foco_est <- diff(ts_focos_trei, differences = 1)
 
 
 
 # cross correlation function
-arima_past <- Arima(ts_past_est, order=c(2,0,0))
-arima_gado <- Arima(ts_gado_est, order=c(1,0,1))
-arima_agro <- Arima(ts_agro_est, order=c(1,0,0))
+arima_past <- Arima(ts_past_trei_est, order=c(2,0,0))
+arima_gado <- Arima(ts_gado_trei_est, order=c(1,0,1))
+arima_agro <- Arima(ts_agro_trei_est, order=c(1,0,0))
 arima_foco <-Arima(ts_foco_est, order=c(2,0,1))
-arima_made <-Arima(ts_made_est, order=c(0,0,1))
+arima_made <-Arima(ts_made_trei_est, order=c(0,0,1))
 
 
 par(mfrow=c(3,2))
 
-modelo_florpast <- Arima(ts_flor_est, model=arima_past)
+modelo_florpast <- Arima(ts_flor_trei_est, model=arima_past)
 ccf(modelo_florpast$residuals, arima_past$residuals, xlim=c(0,13),
     xlab="Defasagem", ylab="FAC", main="Correlação cruzada - Floresta Nativa x Pastagem")
 
-modelo_flormade <- Arima(ts_flor_est, model=arima_made)
+modelo_flormade <- Arima(ts_flor_trei_est, model=arima_made)
 ccf(modelo_flormade$residuals, arima_made$residuals, xlim=c(0,13),
     xlab="Defasagem", ylab="FAC", main="Correlação cruzada - Floresta Nativa x Extração de Madeira")
 
-modelo_florgado <- Arima(ts_flor_est, model=arima_gado)
+modelo_florgado <- Arima(ts_flor_trei_est, model=arima_gado)
 ccf(modelo_florpast$residuals, arima_gado$residuals, xlim=c(0,13),
     xlab="Defasagem", ylab="FAC", main="Correlação cruzada - Floresta Nativa x Efetivo Bovino")
 
-modelo_floragro <- Arima(ts_flor_est, model=arima_agro)
+modelo_floragro <- Arima(ts_flor_trei_est, model=arima_agro)
 ccf(modelo_floragro$residuals, arima_agro$residuals, xlim=c(0,13),
     xlab="Defasagem", ylab="FAC", main="Correlação cruzada - Floresta Nativa x Agricultura")
 
-modelo_florfoco <- Arima(ts_flor_est, model=arima_foco)
+modelo_florfoco <- Arima(ts_flor_trei_est, model=arima_foco)
 ccf(modelo_florfoco$residuals, arima_foco$residuals, xlim=c(0,13),
     xlab="Defasagem", ylab="FAC", main="Correlação cruzada - Floresta Nativa x Focos")
 
@@ -747,35 +775,29 @@ ccf(modelo_florfoco$residuals, arima_foco$residuals, xlim=c(0,13),
 
 ## Previsão com modelos univariados
 
-plot_flor <- forecast(fit11, h=11)
-prev_flor <- data.frame(Ano=c(2020:2030), previsao=plot_flor$mean, min=plot_flor$lower, max=plot_flor$upper)
+plot_flor <- forecast(fit11, h=16)
+prev_flor <- data.frame(Ano=c(2015:2030), previsao=plot_flor$mean,min=plot_flor$lower, max=plot_flor$upper)
 prev1 <- res_flor |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
   geom_point(data=prev_flor, aes(y=previsao), col="blue")+
   geom_line(data=prev_flor, aes(y=previsao, colour="blue"))+
-  scale_color_manual(name = "", values = c("Previsao"="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
   labs(y="Floresta Nativa", x="Ano")+
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
 plot_past <- forecast(fit222, h=11)
 prev_past <- data.frame(Ano=c(2020:2030), previsao=plot_past$mean)
-
-prev_flor_agr <- full_join(res_flor, prev_flor, by="Ano")
-prev2 <- prev_flor_agr |> 
+prev2 <- res_past |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
-  geom_line(col="black")+
-  geom_point(aes(y=previsao), col="blue")+
-  geom_line(aes(y=previsao, colour="blue"))+
-  geom_errorbar(aes(ymin = min.95., 
-                    ymax = max.95.), 
-                col="Red",width = .1)+
-  scale_color_manual(name = "", values = c("Previs�o"="blue"))+
-  labs(y="Floresta Nativa", x="Ano")+
-  
+  geom_line(aes(colour="black"))+
+  geom_point(data=prev_past, aes(y=previsao), col="blue")+
+  geom_line(data=prev_past, aes(y=previsao, colour="blue"))+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Pastagem", x="Ano")+
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
@@ -844,12 +866,12 @@ dev.off()
 library(TSA)
 
 ## FT com pastagem
-fitduplo <- arimax(ts_flor[,-36], order=c(0,2,1), xtransf=ts_past,
+fitduplo <- arimax(ts_flor_trei[,-36], order=c(0,2,1), xtransf=ts_past_trei,
                    transfer=list(c(0,0)))
 
-res_duplo <- data.frame(Ano=base$Ano[-c(36)], x=fitted(fitduplo))
+res_duplo <- data.frame(Ano=base$Ano[-c(31,32,33,34,35,36)], x=fitted(fitduplo))
 pdf("flor_past_model.pdf")
-base[-36,] |> 
+base[-c(31,32,33,34,35,36),] |> 
   ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -864,9 +886,9 @@ base[-36,] |>
 dev.off()
 
 #Métricas de qualidade de ajuste
-accuracy(ts_flor,fitted(fitduplo))
+accuracy(ts_flor_trei,fitted(fitduplo))
 fitduplo$aic
-
+#362.3526
 
 # Validação do modelo
 Box.test(fitduplo$residuals, lag = 1, type = "Box-Pierce", fitdf = 0)
@@ -877,8 +899,8 @@ shapiro.test(fitduplo$residual)
 
 ##Previsão modelo de transferência relacionados
 pdf("prev_duplo.pdf")
-plot_duplo <- forecast(fitted(fitduplo), h=11)
-prev_duplo <- data.frame(Ano=c(2020:2030), previsao=plot_duplo$mean/10000)
+plot_duplo <- forecast(fitted(fitduplo), h=5)
+prev_duplo <- data.frame(Ano=c(2015:2019), previsao=plot_duplo$mean)
 res_duplo |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
@@ -891,60 +913,41 @@ res_duplo |>
   theme(legend.position = "top", text = element_text(size=15))
 dev.off()
 
-
-
-#---------------------------------------------------------------------------------------------
-#---------------------------------------------------------------------------------------------
-## Tentando modelo melhor ajustado para a série de focos de queimada
-
-
-#Exponencial suavizada
-fithw <- HoltWinters(x=ts_focos,gamma=F)
-fithw
-plot(fithw)
+#Métricas de qualidade de ajuste
+accuracy(ts_flor_test,plot_duplo$mean)
 
 
 
-#arfima
-library(arfima)
-fitarfima <- arfima(ts_focos, order=c(2,1,1))
-fitted(fitarfima)
-
-plot(tacvf(fitarfima, maxlag=25))
-plot(ts_focos)
-
-
-# Nenhum se ajustou muito bem
 #---------------------------------------------------------------------------------------------
 
 ## Utilizando todas as séries temporais para predição do desmatamento menos focos
-auxiliar2 <- data.frame(ts_past,ts_gado,ts_agro)
-fittudo <- arimax(ts_flor[-36], order=c(0,2,1), xtransf=auxiliar2,
+auxiliar2 <- data.frame(ts_past_trei,ts_gado_trei,ts_agro_trei)
+fittudo <- arimax(ts_flor_trei, order=c(0,2,1), xtransf=auxiliar2,
                   transfer=list(c(0,0),c(0,2),c(0,2)), metho="ML")
 
-res_tudo <- data.frame(Ano=base$Ano[-36], x=fitted(fittudo))
-gtudo <- base[-36,] |> 
+res_tudo <- data.frame(Ano=base$Ano[-c(31,32,33,34,35,36)], x=fitted(fittudo))
+gtudo <- base[-c(31,32,33,34,35,36),] |> 
   ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
   geom_point(data=res_tudo, aes(y=x), col="red")+
   geom_line(data=res_tudo, aes(y=x, colour="red"))+
   scale_color_manual(name = "", values = c("Efetivo"="Black", "Ajustado"="red"))+
-  labs(y="Quantidade de focos de queimadas")+
+  labs(y="Floresta nativa")+
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
 
 
 #Métricas de qualidade de ajuste
-accuracy(ts_flor[-c(1,2)],na.omit(fitted(fittudo)))
+accuracy(ts_flor_trei[-c(1,2)],na.omit(fitted(fittudo)))
 fittudo$aic
 # 309.3648, modelo melhorou
 
 ## Previsão
 pdf("prev_tudo.pdf")
-plot_tudo <- forecast(fitted(fittudo), h=11)
-prev_tudo <- data.frame(Ano=c(2020:2030), previsao=plot_tudo$mean)
+plot_tudo <- forecast(fitted(fittudo), h=5)
+prev_tudo <- data.frame(Ano=c(2015:2019), previsao=plot_tudo$mean)
 res_tudo |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
@@ -957,14 +960,18 @@ res_tudo |>
   theme(legend.position = "top", text = element_text(size=15))
 dev.off()
 
+#Métricas de qualidade de ajuste
+accuracy(ts_flor_test,plot_tudo$mean)
+
+#-------------------------------------------------------------------
 ## Utilizando todas as séries temporais para predição do desmatamento inclusive focos
 
-auxiliar3 <- data.frame(ts_past[-c(1:14)],ts_gado[-c(1:14)],ts_agro[-c(1:14)], ts_focos[-22])
-fitfull <- arimax(ts_flor[-c(1:14,36)], order=c(0,2,1), xtransf=auxiliar3,
+auxiliar3 <- data.frame(ts_past_trei[-c(1:14,30)],ts_gado_trei[-c(1:14,30)],ts_agro_trei[-c(1:14,30)], ts_focos_trei[-16])
+fitfull <- arimax(ts_flor_trei[-c(1:14,30)], order=c(0,2,1), xtransf=auxiliar3,
                   transfer=list(c(0,0),c(0,2),c(0,2),c(0,2)), metho="ML")
 
-res_full <- data.frame(Ano=base$Ano[-c(1:14,36)], x=fitted(fitfull))
-gfull <- base[-c(1:14,36),] |> 
+res_full <- data.frame(Ano=base$Ano[-c(1:14,31,32,33,34,35,36)], x=fitted(fitfull))
+gfull <- base[-c(1:14,31,32,33,34,35,36),] |> 
   ggplot(aes(x=Ano, y=`Floresta Natural(Ha)`/10000))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
@@ -978,15 +985,15 @@ gfull <- base[-c(1:14,36),] |>
 
 
 #Métricas de qualidade de ajuste
-accuracy(ts_flor[-c(1:16,36)],na.omit(fitted(fitfull)))
+accuracy(ts_flor_trei[-c(1:16,36)],na.omit(fitted(fitfull)))
 fitfull$aic
 #150.1924
 
 
 ## Previsão
 pdf("prev_full.pdf")
-plot_full <- forecast(fitted(fitfull), h=11)
-prev_full <- data.frame(Ano=c(2020:2030), previsao=plot_full$mean)
+plot_full <- forecast(fitted(fitfull), h=5)
+prev_full <- data.frame(Ano=c(2015:2019), previsao=plot_full$mean)
 res_full |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
@@ -998,3 +1005,7 @@ res_full |>
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 dev.off()
+
+#Métricas de qualidade de ajuste
+prev_full_comp <- ts(plot_full$mean, start = 2015, end = 2019, frequency=1)
+accuracy(ts_flor_test,prev_full_comp)
