@@ -749,22 +749,28 @@ ccf(modelo_florfoco$residuals, arima_foco$residuals, xlim=c(0,13),
 
 plot_flor <- forecast(fit11, h=11)
 prev_flor <- data.frame(Ano=c(2020:2030), previsao=plot_flor$mean, min=plot_flor$lower, max=plot_flor$upper)
-prev1 <- res_flor |> 
+
+prev_flor_agr <- full_join(res_flor, prev_flor, by="Ano")
+prev1 <- prev_flor_agr |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
-  geom_line(aes(colour="black"))+
-  geom_point(data=prev_flor, aes(y=previsao), col="blue")+
-  geom_line(data=prev_flor, aes(y=previsao, colour="blue"))+
-  scale_color_manual(name = "", values = c("Previsao"="blue"))+
+  geom_line(col="black")+
+  geom_point(aes(y=previsao), col="blue")+
+  geom_line(aes(y=previsao, colour="blue"))+
+  geom_errorbar(aes(ymin = min.95., 
+                    ymax = max.95.), 
+                col="Red",width = .1)+
+  scale_color_manual(name = "", values = c("Previs„o"="blue"))+
   labs(y="Floresta Nativa", x="Ano")+
+  
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
 plot_past <- forecast(fit222, h=11)
-prev_past <- data.frame(Ano=c(2020:2030), previsao=plot_past$mean)
+prev_past <- data.frame(Ano=c(2020:2030), previsao=plot_past$mean, min=plot_past$lower, max=plot_past$upper)
 
-prev_flor_agr <- full_join(res_flor, prev_flor, by="Ano")
-prev2 <- prev_flor_agr |> 
+prev_past_agr <- full_join(res_past, prev_past, by="Ano")
+prev2 <- prev_past_agr |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(col="black")+
@@ -781,61 +787,83 @@ prev2 <- prev_flor_agr |>
 
 
 plot_gado <- forecast(fit3, h=11)
-prev_gado <- data.frame(Ano=c(2020:2030), previsao=plot_gado$mean)
-prev3 <- res_gado |> 
+prev_gado <- data.frame(Ano=c(2020:2030), previsao=plot_gado$mean, min=plot_gado$lower, max=plot_gado$upper)
+
+prev_gado_agr <- full_join(res_gado, prev_gado, by="Ano")
+prev3 <- prev_gado_agr |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
   geom_line(aes(colour="black"))+
-  geom_point(data=prev_gado, aes(y=previsao), col="blue")+
-  geom_line(data=prev_gado, aes(y=previsao, colour="blue"))+
-  scale_color_manual(name = "", values = c("Previs√£o"="blue"))+
+  geom_point(aes(y=previsao), col="blue")+
+  geom_line(aes(y=previsao, colour="blue"))+
+  geom_errorbar(aes(ymin = min.95., 
+                    ymax = max.95.), 
+                col="Red",width = .1)+
+  scale_color_manual(name = "", values = c("Previs„o"="blue"))+
   labs(y="Efetivo bovino", x="Ano")+
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
 
 plot_agro <- forecast(fit4, h=11)
-prev_agro <- data.frame(Ano=c(2020:2030), previsao=plot_agro$mean)
-prev4 <- res_agro |> 
+prev_agro <- data.frame(Ano=c(2020:2030), previsao=plot_agro$mean, min=plot_agro$lower, max=plot_agro$upper)
+
+prev_agro_agr <- full_join(res_agro, prev_agro, by="Ano")
+prev4 <- prev_agro_agr |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
-  geom_line(aes(colour="black"))+
-  geom_point(data=prev_agro, aes(y=previsao), col="blue")+
-  geom_line(data=prev_agro, aes(y=previsao, colour="blue"))+
-  scale_color_manual(name = "", values = c("Previs√£o"="blue"))+
-  labs(y="Agricultura", x="Ano")+
+  geom_line(col="black")+
+  geom_point(aes(y=previsao), col="blue")+
+  geom_line(aes(y=previsao, colour="blue"))+
+  geom_errorbar(aes(ymin = min.95., 
+                    ymax = max.95.), 
+                col="Red",width = .1)+
+  scale_color_manual(name = "", values = c("Previs„o"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
 
-
 plot_foco <- forecast(fit5, h=10)
-prev_foco <- data.frame(Ano=c(2021:2030), previsao=plot_foco$mean)
-prev5 <- res_foco |> 
+prev_foco <- data.frame(Ano=c(2021:2030), previsao=plot_foco$mean, min=plot_foco$lower, max=plot_foco$upper)
+
+prev_foco_agr <- full_join(res_foco, prev_foco, by="Ano")
+prev5 <- prev_foco_agr |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
-  geom_line(aes(colour="black"))+
-  geom_point(data=prev_foco, aes(y=previsao), col="blue")+
-  geom_line(data=prev_foco, aes(y=previsao, colour="blue"))+
-  scale_color_manual(name = "", values = c("Previs√£o"="blue"))+
-  labs(y="Focos de Queimada", x="Ano")+
+  geom_line(col="black")+
+  geom_point(aes(y=previsao), col="blue")+
+  geom_line(aes(y=previsao, colour="blue"))+
+  geom_errorbar(aes(ymin = min.95., 
+                    ymax = max.95.), 
+                col="Red",width = .1)+
+  scale_color_manual(name = "", values = c("Previs„o"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
 plot_made <- forecast(fit6, h=10)
-prev_made <- data.frame(Ano=c(2021:2030), previsao=plot_made$mean)
-prev6 <- res_made |> 
+prev_made <- data.frame(Ano=c(2021:2030), previsao=plot_made$mean, min=plot_made$lower, max=plot_made$upper)
+
+prev_made_agr <- full_join(res_made, prev_made, by="Ano")
+prev6 <- prev_made_agr |> 
   ggplot(aes(x=Ano, y=x))+
   geom_point(col="black")+
-  geom_line(aes(colour="black"))+
-  geom_point(data=prev_made, aes(y=previsao), col="blue")+
-  geom_line(data=prev_made, aes(y=previsao, colour="blue"))+
-  scale_color_manual(name = "", values = c("Previs√£o"="blue"))+
-  labs(y="Metros c√∫bicos de madeira", x="Ano")+
+  geom_line(col="black")+
+  geom_point(aes(y=previsao), col="blue")+
+  geom_line(aes(y=previsao, colour="blue"))+
+  geom_errorbar(aes(ymin = min.95., 
+                    ymax = max.95.), 
+                col="Red",width = .1)+
+  scale_color_manual(name = "", values = c("Previs„o"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  
   theme_classic()+
   theme(legend.position = "top", text = element_text(size=15))
 
-pdf("previs√µes.pdf")
+pdf("previsıes.pdf")
 grid.arrange(prev1,prev2, prev6, prev3,prev4,prev5 ,ncol=2,nrow=3)
 dev.off()
 
