@@ -1093,3 +1093,26 @@ prev_triplo2 <- data.frame(Ano=c(2015:2019), previsao=plot_triplo$mean, min=plot
 
 
 
+## Plot previsões finais com IC
+
+
+plot_triplo2 <- forecast(fitted(fittriplo), h=16)
+prev_triplo2 <- data.frame(Ano=c(2015:2030), previsao=plot_triplo2$mean, min=plot_triplo2$lower, max=plot_triplo2$upper)
+
+prev_triplo_agr2 <- full_join(base, prev_triplo2, by="Ano")
+pdf("prev_e_final.pdf")
+prev_triplo_agr2 |> 
+  ggplot(aes(x=Ano, y=`Floresta Nativa(Ha)`/10000))+
+  geom_point(col="black")+
+  geom_line(col="black")+
+  geom_point(aes(y=previsao), col="blue")+
+  geom_line(aes(y=previsao, colour="blue"))+
+  geom_errorbar(aes(ymin = min.95., 
+                    ymax = max.95.), 
+                col="Red",width = .1)+
+  scale_color_manual(name = "", values = c("Previsão"="blue"))+
+  labs(y="Floresta Nativa", x="Ano")+
+  
+  theme_classic()+
+  theme(legend.position = "top", text = element_text(size=15))
+dev.off()
